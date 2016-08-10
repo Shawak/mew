@@ -10,19 +10,15 @@ module Mew
       API_URL = HOST + RESOURCE
 
       HEADERS = {
-          'user_agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-          'Accept-Charset': 'utf-8,*;q=0.7',
-          'Accept-Language': 'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4,de;q=0.2',
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache'
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Cache-Control': 'no-cache'
       }
 
       attr_reader :cookies
       attr_reader :data
       attr_reader :conversation
 
-      def initialize(lang='ru')
+      def initialize
         @data = {
             'stimulus': '',
             'start': 'y',
@@ -38,7 +34,6 @@ module Mew
             'icognocheck': '',
             'fno': 0,
             'prevref': '',
-            'cb_settings_language': lang,
             'emotionaloutput': '',
             'emotionalhistory': '',
             'asbotname': '',
@@ -63,7 +58,7 @@ module Mew
       # call a post method
       def make_post(url, json)
         # RestClient.post url, json, headers
-        RestClient::Request.execute method: :post, url: url,payload: URI.encode_www_form(json), headers: HEADERS, cookies: cookies
+        RestClient::Request.execute method: :post, url: url, payload: URI.encode_www_form(json), headers: HEADERS, cookies: cookies
       end
 
       def send_message(question)
@@ -92,7 +87,7 @@ module Mew
         conversation << clever_response[0]
 
         # return the response
-        clever_response[0]
+        clever_response[0].downcase
       end
 
       def set_conversation
