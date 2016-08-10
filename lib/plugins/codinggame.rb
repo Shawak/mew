@@ -104,14 +104,16 @@ module Mew
             end
           end
         elsif !lobby.nil? && param == 'start'
-          client.start
-          (1..3).each do |i|
-            response.edit 'Lobby: ' + lobby <<
-                              "\n> starting the lobby in .. #{4-i}"
-            sleep 1
+          if client.users.length > 1
+            client.start
+            (1..3).each do |i|
+              response.edit 'Lobby: ' + lobby <<
+                                "\n> starting the lobby in .. #{4-i}"
+              sleep 1
+            end
+            response.edit 'Lobby: started!'
+            lobby = nil
           end
-          response.edit 'Lobby: started!'
-          lobby = nil
         end
         nil
       end
