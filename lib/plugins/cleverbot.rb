@@ -110,17 +110,17 @@ module Mew
       command(:cb, description: 'Answers using cleverbot', min_args: 1, usage: 'cb <text>') do |event, *str|
         Thread.new do
           sleep 3
-          event.respond('::cb ' + CGI.unescapeHTML(clever_bot.think(str.join ' ')))
+          event.respond('::cb ' + CGI.unescapeHTML(clever_bot.send_message(str.join ' ')))
         end
         nil
       end
 
       pm do |event|
-        event.respond(CGI.unescapeHTML(clever_bot.think(event.content)).downcase)
+        event.respond(CGI.unescapeHTML(clever_bot.send_message(event.content)).downcase)
       end
 
-      mention do |event, *str|
-        event.respond(CGI.unescapeHTML(clever_bot.send_message(str.join ' ')))
+      mention do |event|
+        event.respond(CGI.unescapeHTML(clever_bot.send_message(event.content)))
       end
     end
   end
