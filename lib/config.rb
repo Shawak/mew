@@ -20,9 +20,9 @@ module Mew
       @owner_id = gets.chomp
       @owner_id = 212564055901077505 if @owner_id.empty?
 
-      puts 'Permissions Code (Enter for 66321471): '
+      puts 'Permissions Code (Enter for 3072): '
       @permissions = gets.chomp
-      @permissions = 66321471 if @permissions.empty?
+      @permissions = 3072 if @permissions.empty?
 
       puts 'Prefix (Enter for "."): '
       @prefix = gets.chomp
