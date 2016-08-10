@@ -35,7 +35,24 @@ module Mew
             @link = '/clashofcode/clash/' + response['success']['publicHandle']
             ShortURL.shorten 'https://anon.to/?' + self.class.base_uri + '/clashofcode/clash/' + response['success']['publicHandle'], :tinyurl
           else
-            false
+            nil
+          end
+        end
+
+        def users
+          response = self.class.post('/services/ClashOfCodeRemoteService/findClashByHandle',
+                                     :verify => false,
+                                     headers: {'Cookie' => @cookie.to_cookie_string},
+                                     :body => "[\"#{@handle}\"]")
+
+          if response.success? && response['success']
+            ret = []
+            response['success']['players'].each do |p|
+              ret.push p['codingamerNickname']
+            end
+            ret
+          else
+            nil
           end
         end
 
@@ -43,7 +60,6 @@ module Mew
           response = self.class.post('/services/ClashOfCodeRemoteService/startClashByHandle',
                                      :verify => false,
                                      headers: {'Cookie' => @cookie.to_cookie_string},
-                                     follow_redirects: true,
                                      :body => "[#{@id}, \"#{@handle}\"]")
 
           response.success? && response['success']
@@ -57,47 +73,47 @@ module Mew
       end
 
       client = Client.new
-      lobby = false
+      client.login
+
+      lobby = nil
+      response = nil
 
       command(:clash,
               description: 'Generates a codingame lobby link',
               usage: 'clash (public|private|start)') do |event, param|
 
-        param = '' if param == nil
+        param = 'private' if param == nil
 
-        if lobby === false && param == 'private' || param == ''
-          client.login
+        if lobby.nil? && param == 'private'
           lobby = client.create
-
-          t = lobby
+          response = event.respond 'Lobby: ' + lobby <<
+                                       "\njoin folks!"
+          temp = lobby
+          Thread.new do
+            while lobby == temp
+              response.edit 'Lobby: ' + lobby <<
+                                "\nPlayers: " + client.users.join(', ')
+              sleep 5
+            end
+          end
           Thread.new do
             sleep 60 * 4.9
-            if lobby == t
-              event.respond 'codingame: lobby closed!'
-              lobby = false
+            if lobby == temp
+              lobby = nil
+              response.edit 'Lobby: closed!'
             end
           end
-
-          'codingame: ' + lobby
-        elsif lobby === false && param == 'public'
-          'coingame: sorry i can\'t do this yet' # TODO
-        else
-          if param == 'start'
-            if lobby
-              client.start
-              lobby = false
-              event.respond 'codingame: starting the lobby!'
-              (1..3).each do |i|
-                sleep 1
-                event.respond (4-i).to_s
-              end
-              nil
-            else
-              'codingame: there is no lobby to start!'
-            end
+        elsif !lobby.nil? && param == 'start'
+          client.start
+          (1..3).each do |i|
+            response.edit 'Lobby: ' + lobby <<
+                              "\n> starting the lobby in .. #{4-i}"
+            sleep 1
           end
+          response.edit 'Lobby: started!'
+          lobby = nil
         end
-
+        nil
       end
     end
   end

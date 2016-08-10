@@ -76,6 +76,7 @@ module Mew
 
         response = make_post(API_URL, data)
 
+        @cookies = response.cookies
         clever_response = response.to_str.split(/[\r]+/)
 
         # see HTML encoding of foreign language characters
@@ -87,7 +88,7 @@ module Mew
         conversation << clever_response[0]
 
         # return the response
-        clever_response[0].downcase
+        clever_response[0]
       end
 
       def set_conversation
@@ -110,7 +111,7 @@ module Mew
       command(:cb, description: 'Answers using cleverbot', min_args: 1, usage: 'cb <text>') do |event, *str|
         Thread.new do
           sleep 3
-          event.respond('::cb ' + CGI.unescapeHTML(clever_bot.send_message(str.join ' ')))
+          event.respond(CGI.unescapeHTML(clever_bot.send_message(str.join ' ')))
         end
         nil
       end
@@ -120,7 +121,7 @@ module Mew
       end
 
       mention do |event|
-        event.respond(CGI.unescapeHTML(clever_bot.send_message(event.content)))
+        event.respond(CGI.unescapeHTML(clever_bot.send_message(event.content)).downcase)
       end
     end
   end
