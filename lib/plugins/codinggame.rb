@@ -78,7 +78,7 @@ module Mew
             end
           end
 
-          lobby
+          'codingame: ' + lobby
         elsif lobby === false && param == 'public'
           'coingame: sorry i can\'t do this yet' # TODO
         else

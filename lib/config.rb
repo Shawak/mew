@@ -4,9 +4,9 @@ module Mew
     attr_accessor :discord_token, :owner_id, :permissions, :prefix,
                   :codingame_email, :codingame_password
 
-    def initialize(file, skip)
+    def initialize(file)
       config = load file
-      setup(file) if config == {} && !skip
+      setup(file) if config == {}
       export config
     end
 

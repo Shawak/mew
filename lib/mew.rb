@@ -9,13 +9,11 @@ require 'json'
 require 'cgi' # (unescape html in cleverbot)
 require 'net/http'
 
-RAKE = false unless defined? RAKE
-
 module Mew
   # Load own classes
   Dir["#{File.dirname(__FILE__)}/*.rb"].each { |file| require file }
 
-  CONFIG = Config.new 'config.json', RAKE
+  CONFIG = Config.new 'config.json'
 
   BOT = Discordrb::Commands::CommandBot.new(
       token: CONFIG.discord_token,
