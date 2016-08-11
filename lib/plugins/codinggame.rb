@@ -74,7 +74,6 @@ module Mew
       end
 
       client = Client.new
-      client.login
 
       lobby = nil
       response = nil
@@ -86,6 +85,7 @@ module Mew
         param = 'private' if param == nil
 
         if lobby.nil? && param == 'private'
+          client.login
           lobby = client.create
           response = event.respond 'Lobby: ' + lobby <<
                                        "\njoin folks!"
