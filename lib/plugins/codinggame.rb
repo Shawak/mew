@@ -14,6 +14,7 @@ module Mew
                                      :verify => false,
                                      :body => "[\"#{CONFIG.codingame_email}\",\"#{CONFIG.codingame_password}\",true]")
 
+          puts response
           if response.success? && response['success']
             @cookie = parse_cookie(response)
             @id = response['success']['user']['id']
