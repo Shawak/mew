@@ -14,7 +14,6 @@ module Mew
                                      :verify => false,
                                      :body => "[\"#{CONFIG.codingame_email}\",\"#{CONFIG.codingame_password}\",true]")
 
-          puts response
           if response.success? && response['success']
             @cookie = parse_cookie(response)
             @id = response['success']['user']['id']
@@ -31,7 +30,6 @@ module Mew
                                      :body => "[#{@id},{\"SHORT\":true}]")
 
           if response.success? && response['success']
-            #@cookie = parse_cookie(response)
             @handle = response['success']['publicHandle']
             @link = '/clashofcode/clash/' + response['success']['publicHandle']
             ShortURL.shorten 'https://anon.to/?' + self.class.base_uri + '/clashofcode/clash/' + response['success']['publicHandle'], :tinyurl
@@ -74,6 +72,7 @@ module Mew
       end
 
       client = Client.new
+      client.login
 
       lobby = nil
       response = nil
@@ -85,7 +84,6 @@ module Mew
         param = 'private' if param == nil
 
         if lobby.nil? && param == 'private'
-          client.login
           lobby = client.create
           response = event.respond 'Lobby: ' + lobby <<
                                        "\njoin folks!"
