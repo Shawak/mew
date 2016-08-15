@@ -4,7 +4,7 @@
 
 ### Install
 
-First of all, install ruby 2.3.1 [Setup]( https://gorails.com/setup/ubuntu/14.04) (until gem install bundler)
+First of all, install ruby 2.3.1 [Setup]( https://gorails.com/setup/ubuntu/14.04) (until `gem install bundler`)
 
 Then:
 
