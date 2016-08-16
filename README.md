@@ -16,6 +16,6 @@ Then:
     git pull
     bundle install
 
-## Contact
+### Contact
 
 You can find me on the discord channel mentioned above as `<@166516277513420800>`
