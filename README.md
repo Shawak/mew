@@ -9,10 +9,12 @@ First of all, install ruby 2.3.1 [Setup]( https://gorails.com/setup/ubuntu/14.04
 Then:
 
     git clone https://github.com/Shawak/mew.git
+    cd mew
     bundle install
   
 ###Updating
 
+    cd mew
     git pull
     bundle install
 
