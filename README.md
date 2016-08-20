@@ -11,6 +11,9 @@ Then:
     git clone https://github.com/Shawak/mew.git
     cd mew
     bundle install
+    chmod 755 run.sh
+    
+And use `./run.sh` to start mew!
   
 ###Updating
 
