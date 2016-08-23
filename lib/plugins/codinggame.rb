@@ -32,7 +32,7 @@ module Mew
           if response.success? && response['success']
             @handle = response['success']['publicHandle']
             @link = '/clashofcode/clash/' + response['success']['publicHandle']
-            ShortURL.shorten 'https://anon.to/?' + self.class.base_uri + '/clashofcode/clash/' + response['success']['publicHandle'], :tinyurl
+            '<' + ShortURL.shorten(self.class.base_uri + '/clashofcode/clash/' + response['success']['publicHandle'], :tinyurl) + '>'
           else
             nil
           end
